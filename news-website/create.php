@@ -3,8 +3,8 @@ $success = "";
 $error="";
  include("assets/classes/autoload.php");
 if ($_SERVER['REQUEST_METHOD'] == "POST") {
-    $title = $_POST['title'];
-    $article = $_POST['article'];
+    $title = addslashes($_POST['title']);
+    $article = addslashes($_POST['article']);
     $image = $_POST['image'];
     if ($title == "" || $article == "") {
         $error = "some fields are empty";
@@ -114,28 +114,33 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
     
     <div style="padding: 40px;">
         <div class="row row-cols-1 row-cols-md-3 g-4" style="background: cadetblue; border-radius: 20px; min-height: 80vh; overflow-y: auto;">
-            <div class="col">
                 <?php
                 $post = new post();
                 $userid = [];
                 $userid["userid"] = $_SESSION ['userid'];
                 $results =$post->get_post_id($userid);
-                print_r($results);
-                echo "<br>";
-                print_r($userid);
-                echo "<br>";
+                if ($results) {
+                    $image = "https://tse4.mm.bing.net/th/id/OIP.JFqOXf8-Waw9gDdkJJMD2QHaE8?r=0&rs=1&pid=ImgDetMain&o=7&rm=3";
+                    foreach ($results as $article){
+                        if($article['image'] !== ""){
+                            $image = $article['image'];
+                        }
+                        echo '  <div class="col">
+                                    <div class="card">
+                                    <img src="' . $image . '" class="card-img-top" alt="...">
+                                    <div class="card-body">
+                                    <h5 class="card-title">' . $article['title'] . '</h5>
+                                    <p class="card-text">' . $article['article'] . '</p>
+                                    </div>
+                                    </div>
+                                </div>';
+                    }
+                } else {
+                    echo "<div class='alert alert-danger' role='alert'>No articles found</div>";
+                }
                 ?>
-                <div class="card">
-                    <img src="https://tse4.mm.bing.net/th/id/OIP.JFqOXf8-Waw9gDdkJJMD2QHaE8?r=0&rs=1&pid=ImgDetMain&o=7&rm=3" class="card-img-top" alt="...">
-                    <div class="card-body">
-                        <h5 class="card-title">Card title</h5>
-                        <p class="card-text">This is a longer card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
-                    </div>
-                </div>
-            </div>
-          
-
-
+        </div>
+    </div>
 </body>
 <script src="assets/js/bootstrap.min.js"></script>
 

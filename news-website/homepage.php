@@ -1,6 +1,5 @@
 <?php
 include("assets/classes/autoload.php");
-print_r($_SESSION);
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -60,42 +59,31 @@ print_r($_SESSION);
 
     <div style="padding: 40px;">
         <div class="row row-cols-1 row-cols-md-3 g-4" style="background: cadetblue; border-radius: 20px; min-height: 80vh; overflow-y: auto;">
-            <div class="col">
-                <div class="card">
-                    <img src="https://tse4.mm.bing.net/th/id/OIP.JFqOXf8-Waw9gDdkJJMD2QHaE8?r=0&rs=1&pid=ImgDetMain&o=7&rm=3" class="card-img-top" alt="...">
-                    <div class="card-body">
-                        <h5 class="card-title">Card title</h5>
-                        <p class="card-text">This is a longer card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
-                    </div>
-                </div>
-            </div>
-            <div class="col">
-                <div class="card">
-                    <img src="..." class="card-img-top" alt="...">
-                    <div class="card-body">
-                        <h5 class="card-title">Card title</h5>
-                        <p class="card-text">This is a longer card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
-                    </div>
-                </div>
-            </div>
-            <div class="col">
-                <div class="card">
-                    <img src="..." class="card-img-top" alt="...">
-                    <div class="card-body">
-                        <h5 class="card-title">Card title</h5>
-                        <p class="card-text">This is a longer card with supporting text below as a natural lead-in to additional content.</p>
-                    </div>
-                </div>
-            </div>
-            <div class="col">
-                <div class="card">
-                    <img src="..." class="card-img-top" alt="...">
-                    <div class="card-body">
-                        <h5 class="card-title">Card title</h5>
-                        <p class="card-text">This is a longer card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
-                    </div>
-                </div>
-            </div>
+            
+        <?php
+                $post = new post();
+
+                $results =$post->get_post();
+                if ($results) {
+                    $image = "https://tse4.mm.bing.net/th/id/OIP.JFqOXf8-Waw9gDdkJJMD2QHaE8?r=0&rs=1&pid=ImgDetMain&o=7&rm=3";
+                    foreach ($results as $article){
+                        if($article['image'] !== ""){
+                            $image = $article['image'];
+                        }
+                        echo '  <div class="col">
+                                    <div class="card">
+                                    <img src="' . $image . '" class="card-img-top" alt="...">
+                                    <div class="card-body">
+                                    <h5 class="card-title">' . $article['title'] . '</h5>
+                                    <p class="card-text">' . $article['article'] . '</p>
+                                    </div>
+                                    </div>
+                                </div>';
+                    }
+                } else {
+                    echo "<div class='alert alert-danger' role='alert'>No articles found</div>";
+                }
+                ?>
         </div>
     </div>
 
