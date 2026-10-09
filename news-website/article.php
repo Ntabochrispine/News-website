@@ -1,5 +1,15 @@
 <?php
 include("assets/classes/autoload.php");
+$post = new post();
+$postid = [];
+$postid["postid"] = $_GET['postid'];//
+$results =$post->get_post_id($postid);
+$image = "https://tse4.mm.bing.net/th/id/OIP.JFqOXf8-Waw9gDdkJJMD2QHaE8?r=0&rs=1&pid=ImgDetMain&o=7&rm=3";
+    if($results[0]['image'] !== ""){
+    $image = $results[0]['image'];
+    }
+
+print_r($results);
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -56,34 +66,12 @@ include("assets/classes/autoload.php");
         </nav>
     </div>
 
-
-    <div style="padding: 40px;">
-        <div class="row row-cols-1 row-cols-md-3 g-4" style="background: cadetblue; border-radius: 20px; min-height: 80vh; overflow-y: auto;">
-            
-        <?php
-                $post = new post();
-
-                $results =$post->get_post();
-                if ($results) {
-                    $image = "https://tse4.mm.bing.net/th/id/OIP.JFqOXf8-Waw9gDdkJJMD2QHaE8?r=0&rs=1&pid=ImgDetMain&o=7&rm=3";
-                    foreach ($results as $article){
-                        if($article['image'] !== ""){
-                            $image = $article['image'];
-                        }
-                        echo '  <div class="col">
-                                    <div class="card">
-                                    <img src="' . $image . '" class="card-img-top" alt="...">
-                                    <div class="card-body">
-                                    <h5 class="card-title"><a href="article.php?postid=' . $article['postid'] . '" style = "text-decoration:none;>' . $article['title'] . '</h5>
-                                    <p class="card-text" style="height: 0; min-height: 20vh; overflow: hidden;">' . $article['article'] . '</p>
-                                    </div>
-                                    </div>
-                                </div>';
-                    }
-                } else {
-                    echo "<div class='alert alert-danger' role='alert'>No articles found</div>";
-                }
-                ?>
+    <div class="card" style="width: 18rem;">
+        <div class="card-body">
+            <img src="<?php echo $image; ?>" class="card-img" alt="...">
+            <h5 class="mt-2 mb-0"><?php echo $results[0]['title']; ?></h5>
+            <p class="card-text fg-2"><?php echo $results[0]['article']; ?></p>
+            <small class="fg-3">Last updated 3 mins ago</small>
         </div>
     </div>
 
