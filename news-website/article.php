@@ -1,16 +1,39 @@
 <?php
-include("assets/classes/autoload.php");
-$post = new post();
-$postid = [];
-$postid["postid"] = $_GET['postid'];//
-$results =$post->get_post_id($postid);
-$image = "https://tse4.mm.bing.net/th/id/OIP.JFqOXf8-Waw9gDdkJJMD2QHaE8?r=0&rs=1&pid=ImgDetMain&o=7&rm=3";
-    if($results[0]['image'] !== ""){
-    $image = $results[0]['image'];
-    }
 
-print_r($results);
+require_once("assets/classes/autoload.php");
+
+$post = new Post();
+
+// Validate the post ID
+if (!isset($_GET['postid']) || !is_numeric($_GET['postid'])) {
+    die("Invalid or missing post ID.");
+}
+
+$postid = [
+    "postid" => (int) $_GET['postid']
+];
+
+// Fetch the post
+$results = $post->get_post_id($postid);
+
+// Check whether the post exists
+if (empty($results) || !isset($results[0])) {
+    die("The requested post was not found.");
+}
+
+// Set a default image
+$image = "https://tse4.mm.bing.net/th/id/OIP.JFqOXf8-Waw9gDdkJJMD2QHaE8?r=0&rs=1&pid=ImgDetMain&o=7&rm=3";
+
+// Use the uploaded image if available
+if (!empty($results[0]['image'])) {
+    $image = $results[0]['image'];
+}
+
+// Store the post fields
+$title = $results[0]['title'] ?? 'Untitled article';
+$article = $results[0]['article'] ?? '';
 ?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -33,7 +56,7 @@ print_r($results);
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                         <li class="nav-item">
-                            <a class="nav-link active" aria-current="page" href="#">Home</a>
+                            <a class="nav-link active" aria-current="page" href="homepage.php">Home</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" href="#">Link</a>
@@ -66,13 +89,15 @@ print_r($results);
         </nav>
     </div>
 
-    <div class="card" style="width: 18rem;">
+    <div style="padding: 40px;">
+    <div class="card" style="  center; background: cadetblue; border-radius: 20px; min-height: 80vh; overflow-y: auto;">
         <div class="card-body">
             <img src="<?php echo $image; ?>" class="card-img" alt="...">
             <h5 class="mt-2 mb-0"><?php echo $results[0]['title']; ?></h5>
             <p class="card-text fg-2"><?php echo $results[0]['article']; ?></p>
             <small class="fg-3">Last updated 3 mins ago</small>
         </div>
+    </div>
     </div>
 
     <footer style="background : cadetblue; min-height: 5vh; text-align: center; padding: 10px;">

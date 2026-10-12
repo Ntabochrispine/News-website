@@ -60,7 +60,7 @@ include("assets/classes/autoload.php");
     <div style="padding: 40px;">
         <div class="row row-cols-1 row-cols-md-3 g-4" style="background: cadetblue; border-radius: 20px; min-height: 80vh; overflow-y: auto;">
             
-        <?php
+            <?php
                 $post = new post();
 
                 $results =$post->get_post();
@@ -72,18 +72,19 @@ include("assets/classes/autoload.php");
                         }
                         echo '  <div class="col">
                                     <div class="card">
-                                    <img src="' . $image . '" class="card-img-top" alt="...">
-                                    <div class="card-body">
-                                    <h5 class="card-title"><a href="article.php?postid=' . $article['postid'] . '" style = "text-decoration:none;>' . $article['title'] . '</h5>
-                                    <p class="card-text" style="height: 0; min-height: 20vh; overflow: hidden;">' . $article['article'] . '</p>
+                                        <img src="' . $image . '" class="card-img-top" alt="...">
+                                        <div class="card-body">
+                                        <h5 class="card-title">' . $article['title'] . '</h5>
+                                        <p class="card-text">' . $article['article'] . '</p>
+                                        <a href="article.php?postid=' . $article['postid'] . '"class="btn btn-primary">Read More</a>
+                                        </div>
                                     </div>
-                                    </div>
-                                </div>';
+                                </div>';  
                     }
                 } else {
                     echo "<div class='alert alert-danger' role='alert'>No articles found</div>";
                 }
-                ?>
+            ?>
         </div>
     </div>
 
